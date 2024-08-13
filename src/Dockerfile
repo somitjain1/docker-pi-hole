@@ -19,6 +19,11 @@ ENV PHP_ERROR_LOG /var/log/lighttpd/error-pihole.log
 ADD https://install.padd.sh /usr/local/bin/padd
 RUN chmod +x /usr/local/bin/padd
 
+ENV BOOT2DOCKER_ID 1000 
+   ENV BOOT2DOCKER_GID 50
+   RUN useradd -r pihole -u ${BOOT2DOCKER_ID} && \     usermod -G staff pihole  
+   RUN groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1) RUN groupmod -g ${BOOT2DOCKER_GID} staff
+
 # IPv6 disable flag for networks/devices that do not support it
 ENV IPv6 True
 
